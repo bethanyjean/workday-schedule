@@ -21,15 +21,15 @@ var createSchedule = function(){
         var taskLi = $("<li>").addClass("row");
         if (i < 5){
         var taskHour = $("<span>")
-            .addClass("hour")
+            .addClass("hour col-1")
             .text(i + 8);
         } else {
             var taskHour = $("<span>")
-            .addClass("hour")
+            .addClass("hour col-1")
             .text(i - 4); 
         }
-        var taskText = $("<span>")
-            .addClass("description future")
+        var taskText = $("<p>")
+            .addClass("description future col-10")
             .text(" ");
         var savebtn = $("<button>")
             .addClass("savebtn")
@@ -102,6 +102,44 @@ var createSchedule = function(){
 // };
 
 scheduleDay();
+console.log("clickity-clack");
+
+// task text was clicked
+$("#task-list").on("click", "p", function() {
+    // get current text of element
+    var text = $(this)
+        .text()
+        .trim();
+
+    // replace element with a new text area
+    var textInput = $("<textarea>").addClass("form-control").val(text);
+    $(this).replaceWith(textInput);
+
+    //auto focus new element
+    textInput.trigger("focus");
+});
+
+//editable field was un-focused
+$("#task-list").on("blur", "textarea", function() {
+    //get the current value of the text area
+    var text = $(this).val();
+
+    var index = $(this)
+        .closest("#task-list")
+        .index();
+
+    // //update array
+    // tasks[index].text = text;
+    // saveTasks();
+
+    //recreate p element
+    var taskP = $("<p>")
+        .addClass("description, col-10")
+        .text(text);
+
+    $(this).replaceWith(taskP);
+
+});
 
 // audit task due dates every 30 minutes
 setInterval(function() {
